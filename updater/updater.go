@@ -7,14 +7,16 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"time"
+	"github.com/intaco/crypto-exchange-rates/db"
 )
 
 type Answer struct {
 	a string
 }
 
-func ABC() {
-	actualize()
+func InitUpdater() {
+	go actualize(time.Now()) //1st run initially
+	actualizePeriodically() //later every N minutes
 }
 type Currencies struct {
 	BTC Price 
@@ -35,9 +37,9 @@ type Price struct {
 
 const CRYPTOCOMPAREURL = "https://min-api.cryptocompare.com/data/pricemulti"
 
-func actualize() (Currencies, error) {
+func actualize(t time.Time) (Currencies, error) {
+	log.Println("actulizing currencies...")
 	var currencies Currencies
-	
 	u, err := url.Parse(CRYPTOCOMPAREURL)
 	if err != nil {
 		log.Fatalf("Failed to parse CSE base url! Error: %s", err)
@@ -49,7 +51,7 @@ func actualize() (Currencies, error) {
 	u.RawQuery = q.Encode()
 	resp, err := http.Get(u.String())
 	if err != nil {
-		log.Fatalf("Could not access website")
+		log.Fatalf("Could not access website %s. Error: %s", CRYPTOCOMPAREURL, err)
 		return currencies, err
 	}
 	defer resp.Body.Close()
@@ -65,9 +67,18 @@ func actualize() (Currencies, error) {
 		return currencies, err
 	
 	}
-	
+	log.Println("actulizing successful...")
+	db.Temp()
+
 	return currencies, nil
 }
 
-const INTERVAL_PERIOD time.Duration = 10 * time.Minute
+const INTERVAL_PERIOD time.Duration = 3 * time.Minute
+
+func actualizePeriodically(){
+    for t := range time.NewTicker(INTERVAL_PERIOD).C {
+        go actualize(t)
+    }
+}
+
 
