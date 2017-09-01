@@ -5,15 +5,17 @@ import (
 )
 
 type Price struct {
-	USD    float32  `gorm:"column:USD"`
-	EUR    float32  `gorm:"column:EUR"`
-	RUR    float32  `gorm:"column:RUR"`
-	Moment time.Time `gorm:"column:moment"`
+	ID  int
+	USD float32  `gorm:"column:USD"`
+	EUR float32  `gorm:"column:EUR"`
+	RUR float32  `gorm:"column:RUR"`
 }
 
 type BTC struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      int
+	Price   Price
+	PriceID int
+	Moment  time.Time
 }
 
 func (BTC) TableName() string {
@@ -21,41 +23,89 @@ func (BTC) TableName() string {
 }
 
 type ETH struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (ETH) TableName() string {
+	return "ETH_prices"
 }
 
 type LTC struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (LTC) TableName() string {
+	return "LTC_prices"
 }
 
 type XMR struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (XMR) TableName() string {
+	return "XMR_prices"
 }
 
 type ETC struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (ETC) TableName() string {
+	return "ETC_prices"
 }
 
 type DASH struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (DASH) TableName() string {
+	return "DASH_prices"
 }
 
 type MAID struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (MAID) TableName() string {
+	return "MAID_prices"
 }
 
 type REP struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (REP) TableName() string {
+	return "REP_prices"
 }
 
 type XEM struct {
-	Id    uint `gorm:"primary_key"`
-	Price Price
+	ID      uint
+	Price   Price
+	PriceID int
+	Moment  time.Time
+}
+
+func (XEM) TableName() string {
+	return "XEM_prices"
 }
