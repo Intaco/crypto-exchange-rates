@@ -4,18 +4,28 @@ import (
 	"time"
 )
 
+type Currencies struct {
+	BTC  BTC
+	ETH  ETH
+	LTC  LTC
+	XMR  XMR
+	ETC  ETC
+	DASH DASH
+	MAID MAID
+	REP  REP
+	XEM  XEM
+}
+
 type Price struct {
-	ID  int
-	USD float32  `gorm:"column:USD"`
-	EUR float32  `gorm:"column:EUR"`
-	RUR float32  `gorm:"column:RUR"`
+	ID     int
+	USD    float32   `gorm:"column:USD"`
+	EUR    float32   `gorm:"column:EUR"`
+	RUR    float32   `gorm:"column:RUR"`
+	Moment time.Time `sql:"DEFAULT:current_timestamp"`
 }
 
 type BTC struct {
-	ID      int
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (BTC) TableName() string {
@@ -23,10 +33,7 @@ func (BTC) TableName() string {
 }
 
 type ETH struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (ETH) TableName() string {
@@ -34,10 +41,7 @@ func (ETH) TableName() string {
 }
 
 type LTC struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (LTC) TableName() string {
@@ -45,10 +49,7 @@ func (LTC) TableName() string {
 }
 
 type XMR struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (XMR) TableName() string {
@@ -56,10 +57,7 @@ func (XMR) TableName() string {
 }
 
 type ETC struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (ETC) TableName() string {
@@ -67,10 +65,7 @@ func (ETC) TableName() string {
 }
 
 type DASH struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (DASH) TableName() string {
@@ -78,10 +73,7 @@ func (DASH) TableName() string {
 }
 
 type MAID struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (MAID) TableName() string {
@@ -89,10 +81,7 @@ func (MAID) TableName() string {
 }
 
 type REP struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (REP) TableName() string {
@@ -100,10 +89,7 @@ func (REP) TableName() string {
 }
 
 type XEM struct {
-	ID      uint
-	Price   Price
-	PriceID int
-	Moment  time.Time
+	Price
 }
 
 func (XEM) TableName() string {
