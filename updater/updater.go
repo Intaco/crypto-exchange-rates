@@ -19,10 +19,11 @@ const CRYPTOCOMPAREURL = "https://min-api.cryptocompare.com/data/pricemulti"
 
 func actualize() (db.Currencies, error) {
 	log.Println("actulizing currencies started...")
-	var currencies db.Currencies
+	currencies := db.Currencies{}
+	currencies.InitTypes()
 	u, err := url.Parse(CRYPTOCOMPAREURL)
 	if err != nil {
-		log.Fatalf("Failed to parse CrytoCompare base url! Error: %v", err)
+		log.Printf("Failed to parse CryptoCompare base url! Error: %v", err)
 		return currencies, err
 	}
 	q := u.Query()
@@ -31,19 +32,19 @@ func actualize() (db.Currencies, error) {
 	u.RawQuery = q.Encode()
 	resp, err := http.Get(u.String())
 	if err != nil {
-		log.Fatalf("Could not access website %s. Error: %v", CRYPTOCOMPAREURL, err)
+		log.Printf("Could not access website %s. Error: %v", CRYPTOCOMPAREURL, err)
 		return currencies, err
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalf("Failed to read answer! Error: %v", err)
+		log.Printf("Failed to read answer! Error: %v", err)
 		return currencies, err
 
 	}
 	err = json.Unmarshal(body, &currencies)
 	if err != nil {
-		log.Fatalf("Failed to unmarshal response body! Error: %v", err)
+		log.Printf("Failed to unmarshal response body! Error: %v", err)
 		return currencies, err
 
 	}

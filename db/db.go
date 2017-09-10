@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
+	"time"
 )
 
 var _db *gorm.DB
@@ -16,7 +17,7 @@ func InitDb(path string) error {
 		return err
 	}
 	// Migrate the schema
-	_db.AutoMigrate(&BTC{}, &ETH{}, &LTC{}, &XMR{}, &ETC{}, &DASH{}, &MAID{}, &REP{}, &XEM{})
+	_db.AutoMigrate(&Price{})
 	if _db.Error != nil {
 		log.Printf("Failed to migrate tables! Error: %v\n", err)
 		return err
@@ -38,5 +39,12 @@ func WriteCurrencies(currencies Currencies) []error {
 		log.Printf("Failed to write currencies to DB! Error: %v\n", _db.GetErrors())
 		return _db.GetErrors()
 	}
+
 	return nil
+}
+
+func RetrieveCurrencies(from time.Time, to time.Time) []Price {
+	var results []Price
+	_db.Where("moment BETWEEN ? AND ?", from, to).Order("moment").Find(&results)
+	return results
 }
