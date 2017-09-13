@@ -15,7 +15,7 @@
 <div class="graph-container">
     <canvas class="graph-container__graph" id="myChart"></canvas>
 </div>
-<script src="js/Chart.js"></script>
+<script src="js/lib/Chart.js"></script>
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
@@ -54,6 +54,34 @@
             }
         }
     });
+</script>
+<script>
+    fetch('./api/data', {
+        method: "POST",
+        body: `{
+			    "from": "2012-11-01T22:08:41+00:00",
+                "to": "2017-11-01T22:08:41+00:00"
+
+	    }`
+    })
+        .then(
+            function(response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+                }
+
+                // Examine the text in the response
+                response.json().then(function(data) {
+                    console.log(data);
+                });
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
+
 </script>
 </body>
 </html>
