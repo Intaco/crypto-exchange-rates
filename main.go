@@ -4,7 +4,6 @@ import (
 	"github.com/intaco/crypto-exchange-rates/db"
 	"github.com/intaco/crypto-exchange-rates/updater"
 	"github.com/intaco/crypto-exchange-rates/ui"
-	//"time"
 )
 
 const DBPATH = "crypto-exchange.db"

@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
-	"time"
+	"fmt"
 )
 
 var _db *gorm.DB
@@ -43,8 +43,26 @@ func WriteCurrencies(currencies Currencies) []error {
 	return nil
 }
 
-func RetrieveCurrencies(from time.Time, to time.Time) []Price {
+func RetrieveCurrencies(duration string) []Price {
 	var results []Price
-	_db.Where("moment BETWEEN ? AND ?", from, to).Order("moment").Find(&results)
+	switch duration {
+	case "DAY":
+		fmt.Printf("day")
+		_db.Raw(DAY_QUERY).Scan(&results)
+		break
+	case "WEEK":
+		fmt.Printf("week")
+		_db.Raw(WEEK_QUERY).Scan(&results)
+		break
+	default:
+		fmt.Printf("default")
+		_db.Raw(MONTH_QUERY).Scan(&results)
+		break
+	}
+	if len(_db.GetErrors()) > 0 {
+		log.Printf("Query exec failed. Error: %v", _db.GetErrors())
+		return results
+	}
+	fmt.Printf("%v\n", results)
 	return results
 }

@@ -10,9 +10,11 @@ import (
 )
 
 type moments struct {
-	From time.Time `json:"from"`
-	To   time.Time `json:"to"`
+	From time.Time `json:"from"` //TODO use
+	To   time.Time `json:"to"` //TODO use for custom search
+	Duration string `json:"duration"`
 }
+
 type jsonCurrencies struct {
 	Currencies [] db.Price
 }
@@ -45,7 +47,7 @@ func handleMomentRequests(rw http.ResponseWriter, req *http.Request) {
 			http.Error(rw, "Failed to unmarshal request body!", http.StatusBadRequest)
 			return
 		}
-		currs := db.RetrieveCurrencies(m.From, m.To)
+		currs := db.RetrieveCurrencies(m.Duration)
 		if len(currs) == 0 {
 			http.NotFound(rw, req)
 			return
@@ -63,6 +65,7 @@ func handleMomentRequests(rw http.ResponseWriter, req *http.Request) {
 			http.Error(rw, "", http.StatusInternalServerError)
 			return
 		}
+		break
 	default:
 		http.Error(rw, "Bad request, try POST!", http.StatusBadRequest)
 	}
