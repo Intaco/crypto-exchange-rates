@@ -16,6 +16,18 @@ type Currencies struct {
 	XEM  Price
 }
 
+type CurrenciesArr struct {
+	BTC  []Price
+	ETH  []Price
+	LTC  []Price
+	XMR  []Price
+	ETC  []Price
+	DASH []Price
+	MAID []Price
+	REP  []Price
+	XEM  []Price
+}
+
 func (c * Currencies) InitTypes() { //with default types
 	c.BTC.Type = "BTC"
 	c.ETH.Type = "ETH"

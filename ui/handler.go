@@ -15,10 +15,6 @@ type moments struct {
 	Duration string `json:"duration"`
 }
 
-type jsonCurrencies struct {
-	Currencies [] db.Price
-}
-
 func Serve() {
 	fs := http.FileServer(http.Dir("ui/assets"))
 	http.Handle("/", fs)
@@ -47,13 +43,14 @@ func handleMomentRequests(rw http.ResponseWriter, req *http.Request) {
 			http.Error(rw, "Failed to unmarshal request body!", http.StatusBadRequest)
 			return
 		}
-		currs := db.RetrieveCurrencies(m.Duration)
-		if len(currs) == 0 {
+		currs, err := db.RetrieveCurrencies(m.Duration)
+
+		if err != nil {
+			log.Printf("An error found at retrieving currencies! Error: %v\n", err)
 			http.NotFound(rw, req)
 			return
 		}
-		jsCurrs := jsonCurrencies{Currencies: currs}
-		currenciesJson, err := json.Marshal(jsCurrs)
+		currenciesJson, err := json.Marshal(currs)
 		if err != nil {
 			log.Printf("Failed to marshal retrieved currencies! Error: %v\n", err)
 			http.Error(rw, "", http.StatusInternalServerError)
